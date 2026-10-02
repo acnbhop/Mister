@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Source/">
-    <Project Path="Source/Mister.Core/Mister.Core.csproj" />
+    <Project Path="Source/Mister.Math/Mister.Math.csproj" Id="6a41f2e5-1ee2-40c2-82e4-32c8a11f98d9" />
+    <Project Path="Source/Mister.Memory/Mister.Memory.csproj" Id="ff54e174-b314-4a69-8f67-21e8be77f068" />
   </Folder>
 </Solution>
