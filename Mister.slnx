@@ -1,1 +1,5 @@
-<Solution />
+<Solution>
+  <Folder Name="/Source/">
+    <Project Path="Source/Mister.Core/Mister.Core.csproj" />
+  </Folder>
+</Solution>
