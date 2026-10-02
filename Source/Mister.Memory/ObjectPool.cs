@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Mister.Core.Memory;
+namespace Mister.Memory;
 
 /// <summary>
 /// An object pool that preallocates a fixed number of objects and manages their reuse.

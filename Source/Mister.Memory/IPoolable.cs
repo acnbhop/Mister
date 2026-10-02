@@ -1,6 +1,6 @@
 ﻿// Copyright Grant Abernathy. All rights reserved.
 
-namespace Mister.Core.Memory;
+namespace Mister.Memory;
 
 public interface IPoolable
 {

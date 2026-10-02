@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mister.Core.Memory;
+namespace Mister.Memory;
 
 public unsafe class ArenaAllocator : IDisposable
 {
