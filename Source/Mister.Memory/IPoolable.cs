@@ -2,6 +2,9 @@
 
 namespace Mister.Memory;
 
+/// <summary>
+/// Interface that represents an object that can be pooled.
+/// </summary>
 public interface IPoolable
 {
     /// <summary>

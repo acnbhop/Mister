@@ -5,12 +5,30 @@ using System.Runtime.InteropServices;
 
 namespace Mister.Memory;
 
+/// <summary>
+/// An arena allocator that allocates memory in a contiguous block and allows for fast allocation and deallocation of objects.
+/// </summary>
 public unsafe class ArenaAllocator : IDisposable
 {
+    /// <summary>
+    /// Pointer to the start of the allocated memory block.
+    /// </summary>
     private byte* _buffer;
+
+    /// <summary>
+    /// The total capacity of the arena allocator in bytes.
+    /// </summary>
     private nuint _capacity;
+
+    /// <summary>
+    /// The current offset in the allocated memory block, indicating where the next allocation will occur.
+    /// </summary>
     private nuint _offset;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ArenaAllocator"/> class with the specified capacity in bytes.
+    /// </summary>
+    /// <param name="capacityInBytes">The capacity of the arena allocator in bytes.</param>
     public ArenaAllocator(nuint capacityInBytes)
     {
         _capacity = capacityInBytes;
@@ -18,6 +36,13 @@ public unsafe class ArenaAllocator : IDisposable
         _offset = 0;
     }
 
+    /// <summary>
+    /// Allocates an object of type <typeparamref name="T"/> from the arena allocator with the specified alignment.
+    /// </summary>
+    /// <typeparam name="T">The type of the object to allocate.</typeparam>
+    /// <param name="alignment">The alignment of the object in bytes.</param>
+    /// <returns>A reference to the allocated object.</returns>
+    /// <exception cref="OutOfMemoryException">Thrown when the arena allocator is out of memory.</exception>
     public ref T Allocate<T>(nuint alignment = 16) where T : unmanaged
     {
         AlignOffset(alignment);
@@ -35,6 +60,14 @@ public unsafe class ArenaAllocator : IDisposable
         return ref *(T*)ptr;
     }
 
+    /// <summary>
+    /// Allocates a span of objects of type <typeparamref name="T"/> from the arena allocator with the specified alignment.
+    /// </summary>
+    /// <typeparam name="T">The type of the objects to allocate.</typeparam>
+    /// <param name="count">The number of objects to allocate.</param>
+    /// <param name="alignment">The alignment of the objects in bytes.</param>
+    /// <returns>A span of the allocated objects.</returns>
+    /// <exception cref="OutOfMemoryException">Thrown when the arena allocator is out of memory.</exception>
     public Span<T> AllocateSpan<T>(int count, nuint alignment = 16) where T : unmanaged
     {
         AlignOffset(alignment);
@@ -52,11 +85,17 @@ public unsafe class ArenaAllocator : IDisposable
         return new Span<T>(ptr, count);
     }
 
+    /// <summary>
+    /// Resets the arena allocator, allowing for reuse of the allocated memory. This does not free the memory, but simply resets the allocation offset to zero.
+    /// </summary>
     public void Reset()
     {
         _offset = 0;
     }
 
+    /// <summary>
+    /// Frees the memory allocated by the arena allocator. After calling this method, the allocator should not be used again.
+    /// </summary>
     public void Dispose()
     {
         if (_buffer != null)
@@ -66,6 +105,10 @@ public unsafe class ArenaAllocator : IDisposable
         }
     }
 
+    /// <summary>
+    /// Aligns the current offset to the specified alignment, ensuring the next allocation starts at a properly aligned address.
+    /// </summary>
+    /// <param name="alignment">The alignment in bytes.</param>
     private void AlignOffset(nuint alignment)
     {
         nuint mask = alignment - 1;
